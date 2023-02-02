@@ -1,5 +1,3 @@
-
-
 def format_list_students(students):
     # string = '<br>'.join(str(student) for student in students)
     string = '<table>' \
@@ -25,4 +23,4 @@ def format_list_students(students):
                   f'</tr>'
 
     string += '</tbody></table>'
-    return 
+    return
