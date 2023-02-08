@@ -9,9 +9,8 @@ from webargs.fields import Str
 from webargs.djangoparser import use_args
 from django.db.models import Q
 
-from .forms import CreateStudentForm, UpdateStudentForm, StudentFilterForm
+from .forms import CreateStudentForm, UpdateStudentForm
 from .models import Student
-# from .utils import format_list_students
 
 
 # HttpRequest
@@ -20,32 +19,25 @@ from .models import Student
 
 # CRUD - Create Read Update Delete
 
-# @use_args(
-#     {
-#         'first_name': Str(required=False),
-#         'last_name': Str(required=False),
-#     },
-#     location='query',
-# )
-# def get_students(request, args):
-def get_students(request):
+@use_args(
+    {
+        'first_name': Str(required=False),
+        'last_name': Str(required=False),
+    },
+    location='query',
+)
+def get_students(request, args):
     students = Student.objects.all().order_by('birthday')
 
-    filter_form = StudentFilterForm(data=request.GET, queryset=students)
-
-    # if len(args) and (args.get('first_name') or args.get('last_name')):
-    #     students = students.filter(
-    #         Q(first_name=args.get('first_name', '')) | Q(last_name=args.get('last_name', ''))
-    #     )
+    if len(args) and (args.get('first_name') or args.get('last_name')):
+        students = students.filter(
+            Q(first_name=args.get('first_name', '')) | Q(last_name=args.get('last_name', ''))
+        )
 
     return render(
         request=request,
         template_name='students/list.html',
-        context={
-            # 'title': 'List of Students',
-            # 'students': students,
-            'filter_form': filter_form,
-        }
+        context={'students': students}
     )
 
 
