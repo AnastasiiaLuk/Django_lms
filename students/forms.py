@@ -1,5 +1,4 @@
 from django import forms
-from django_filters import FilterSet
 
 from students.models import Student
 
@@ -32,3 +31,17 @@ class CreateStudentForm(forms.ModelForm):
             if i.isnumeric() or i in symbols:
                 new_value += i
         return new_value
+
+
+class UpdateStudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = [
+            'first_name',
+            'last_name',
+            'birthday',
+            'city'
+        ]
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'})
+        }
