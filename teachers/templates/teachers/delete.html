@@ -6,8 +6,8 @@
     <form method = 'post'>
         {% csrf_token %}
         <p>Do you want to delete teacher <strong>{{ teacher.first_name }} {{ teacher.last_name }}</strong>?</p>
-        <input type="submit" value = 'Agree'>
+        <input class="btn btn-outline-success" type="submit" value = 'Agree'>
         <br><br>
-        <a href="{% url 'teachers:list' %}">Back to list</a>
+        <a class="btn btn-outline-primary" href="{% url 'teachers:list' %}">Back to list</a>
     </form>
 {% endblock %}
