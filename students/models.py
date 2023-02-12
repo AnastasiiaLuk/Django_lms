@@ -35,5 +35,6 @@ class Student(models.Model):
             s.first_name = f.first_name()
             s.last_name = f.last_name()
             s.email = f'{s.first_name}.{s.last_name}@{f.random.choice(VALID_DOMAINS)}'  # name.last@domain
-            s.birthday = f.date_between(start_date='-65y', end_date='-18y')
+            # s.birthday = f.date_between(start_date='-65y', end_date='-18y')
+            s.birthday = f.date()
             s.save()

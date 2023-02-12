@@ -23,6 +23,6 @@ class Teacher(models.Model):
             t = cls()  # t = Teacher()
             t.first_name = f.first_name()
             t.last_name = f.last_name()
-            t.birthday = f.date_between(start_date='-65y', end_date='-18y')
+            t.birthday = f.date()
             t.salary = f.random_int(min=10000, max=50000)
             t.save()
