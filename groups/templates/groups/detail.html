@@ -6,7 +6,7 @@
     <p>Group name: {{ group.group_name }}</p>
     <p>Group start: {{ group.start_date }}</p>
     <p>Group description: {% if group.description %}{{ group.description }}{% endif %}</p>
-    <a href="{% url 'groups:update' group.pk %}">Edit</a>
+    <a class="btn btn-outline-primary" href="{% url 'groups:update' group.pk %}">Edit</a>
     <br><br>
-    <a href="{% url 'groups:list' %}">Back to list</a>
+    <a class="btn btn-outline-primary" href="{% url 'groups:list' %}">Back to list</a>
 {% endblock %}

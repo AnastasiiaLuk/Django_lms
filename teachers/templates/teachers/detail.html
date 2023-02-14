@@ -7,7 +7,7 @@
     <p>Last name: {{ teacher.last_name }}</p>
     <p>Birthday: {{ teacher.birthday }}</p>
     <p>Salary: {{ teacher.salary }}</p>
-    <a href="{% url 'teachers:update' teacher.pk %}/">Edit</a>
+    <a class="btn btn-outline-primary" href="{% url 'teachers:update' teacher.pk %}/">Edit</a>
     <br><br>
-    <a href="{% url 'teachers:list' %}">Back to list</a>
+    <a class="btn btn-outline-primary" href="{% url 'teachers:list' %}">Back to list</a>
 {% endblock %}
