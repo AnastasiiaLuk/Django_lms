@@ -1,4 +1,5 @@
 from django import forms
+from django_filters import FilterSet
 from teachers.models import Teacher
 
 
@@ -24,3 +25,12 @@ class UpdateTeacherForm(forms.ModelForm):
             'last_name',
             'salary'
         ]
+
+
+class TeacherFilterForm(FilterSet):
+    class Meta:
+        model = Teacher
+        fields = {
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith']
+        }

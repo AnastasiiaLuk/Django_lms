@@ -2,7 +2,6 @@ import random
 import datetime
 
 from django.db import models
-from faker import Faker
 
 from .validators import validate_start_date
 
@@ -17,11 +16,8 @@ class Group(models.Model):
 
     @classmethod
     def generate_fake_data(cls, cnt):
-        groups_name = ['Python', 'Front-end', 'Java']
-        f = Faker()
+        groups_name = ['Python', 'Front-end', 'Java', 'C#', 'C/C++', 'DevOPS', 'PM', 'QA']
         for _ in range(cnt):
             g = cls()   #g = Group
-            g.group_name = f'{random.choice(groups_name)}{random.randint(1,100)}'
-            g.group_start = f.date()
-            g.description = f.text()
+            g.group_name = f'{random.choice(groups_name)}'
             g.save()
