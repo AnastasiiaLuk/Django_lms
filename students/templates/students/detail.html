@@ -3,13 +3,23 @@
 {% block title %}Student details{% endblock %}
 
 {% block content %}
-    <p>First name: {{ student.first_name }}</p>
-    <p>Last name: {{ student.last_name }}</p>
-    <p>Email: {{ student.email }}</p>
-    <p>Birthday: {{ student.birthday }}</p>
-    <p>City: {% if student.city %}{{ student.city }}{% endif %}</p>
-    <p>Phone: {% if student.phone %}{{ student.phone }}{% endif %}</p>
-    <a class="btn btn-outline-primary" href="{% url 'students:update' student.pk %}/">Edit</a>
-    <br><br>
-    <a class="btn btn-outline-primary" href="{% url 'students:list' %}">Back to list</a>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col align-self-center">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{ student.first_name }}{{ student.last_name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ student.email }}</h6>
+                <p class="card-text">{{ student.birthday|date:'d M Y' }} ({{ student.get_age }} year(s))</p>
+                {% if student.city %}<p class="card-text">city: {{ student.city }}</p>{% endif %}
+                <p class="card-text">phone: {{ student.phone }}</p>
+                <div class="text-center">
+                    <a class="btn btn-outline-primary" href="{% url 'students:update' student.pk %}">Edit</a>
+                    <a class="btn btn-outline-primary" href="{% url 'students:list' %}">Back to list</a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
 {% endblock %}

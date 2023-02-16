@@ -5,28 +5,17 @@ from django.middleware.csrf import get_token
 from django.shortcuts import render,get_object_or_404
 from webargs.fields import Str
 from webargs.djangoparser import use_args
-from groups.forms import CreateGroupForm, UpdateGroupForm
+from groups.forms import CreateGroupForm, UpdateGroupForm, GroupFilterForm
 from django.urls import reverse
 
 
-@use_args(
-    {
-        'group_name': Str(required=False),
-    },
-    location='query',
-)
-def get_groups(request, args):
+def get_groups(request):
     groups = Group.objects.all().order_by('start_date')
-
-    if len(args) and args.get('group_name'):
-        groups = groups.filter(
-            Q(group_name=args.get('group_name', ''))
-        )
-
+    filter_form = GroupFilterForm(data=request.GET, queryset=groups)
     return render(
         request=request,
         template_name='groups/list.html',
-        context={'groups': groups}
+        context={'filter_form': filter_form}
     )
 
 

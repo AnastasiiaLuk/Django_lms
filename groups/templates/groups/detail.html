@@ -3,10 +3,21 @@
 {% block title %}Group details{% endblock %}
 
 {% block content %}
-    <p>Group name: {{ group.group_name }}</p>
-    <p>Group start: {{ group.start_date }}</p>
-    <p>Group description: {% if group.description %}{{ group.description }}{% endif %}</p>
-    <a class="btn btn-outline-primary" href="{% url 'groups:update' group.pk %}">Edit</a>
-    <br><br>
-    <a class="btn btn-outline-primary" href="{% url 'groups:list' %}">Back to list</a>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col align-self-center">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{ group.group_name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ group.start_date }}</h6>
+                {% if group.description %}<p class="card-text">description: {{ group.description }}</p>{% endif %}
+                <div class="text-center">
+                    <a class="btn btn-outline-primary" href="{% url 'groups:update' group.pk %}">Edit</a>
+                    <a class="btn btn-outline-primary" href="{% url 'groups:list' %}">Back to list</a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
 {% endblock %}
