@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Course details{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col align-self-center">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{ course.course_name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Price: {{ course.course_price }}</h6>
+                {% if course.course_program %}<p class="card-text">Program: {{ course.program }}</p>{% endif %}
+                <div class="text-center">
+                    <a class="btn btn-outline-primary" href="{% url 'courses:update' course.pk %}">Edit</a>
+                    <a class="btn btn-outline-primary" href="{% url 'courses:list' %}">Back to list</a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}
