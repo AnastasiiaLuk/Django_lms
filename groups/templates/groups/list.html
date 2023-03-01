@@ -20,7 +20,7 @@
                         <div class="col-3"></div>
                         <div class="col">
                             <form method="get">
-                                {{ filter_form.form|crispy }}
+                                {{ object_list.form|crispy }}
                                 <input class="btn btn-outline-success" type="submit" value="Search"><br>
                             </form>
                         </div>
@@ -44,7 +44,7 @@
              </tr>
             <thead>
             <tbody>
-            {% for group in filter_form.qs %}
+            {% for group in object_list.qs %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td><a href="{% url 'groups:detail' group.pk %}">{{ group.group_name }}</a></td>

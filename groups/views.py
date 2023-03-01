@@ -1,56 +1,78 @@
-from groups.models import Group
-from django.http import HttpResponseRedirect, HttpResponse
-from django.db.models import Q
-from django.middleware.csrf import get_token
-from django.shortcuts import render,get_object_or_404
-from webargs.fields import Str
-from webargs.djangoparser import use_args
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from groups.forms import CreateGroupForm, UpdateGroupForm, GroupFilterForm
-from django.urls import reverse
+from groups.models import Group
+from students.models import Student
 
 
-def get_groups(request):
-    groups = Group.objects.all().order_by('start_date')
-    filter_form = GroupFilterForm(data=request.GET, queryset=groups)
-    return render(
-        request=request,
-        template_name='groups/list.html',
-        context={'filter_form': filter_form}
-    )
+class ListGroupVIew(ListView):
+    model = Group
+    template_name = 'groups/list.html'
+
+    def get_queryset(self):
+        groups = Group.objects.all().order_by('start_date')
+        filter_form = GroupFilterForm(data=self.request.GET, queryset=groups)
+        return filter_form
 
 
-def detail_group(request, pk):
-    group = get_object_or_404(Group, pk=pk)
-    return render(request, 'groups/detail.html', {'group': group})
+class CreateGroupView(CreateView):
+    model = Group
+    form_class = CreateGroupForm
+    success_url = reverse_lazy('groups:list')
+    template_name = 'groups/create.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        new_group = form.save()
+        students = form.cleaned_data['students']
+        for student in students:
+            student.group = new_group
+            student.save()
+        return response
 
 
-def create_group_view(request):
-    if request.method == 'GET':
-        form = CreateGroupForm()
-    elif request.method == 'POST':
-        form = CreateGroupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('groups:list'))
-    return render(request, 'groups/create.html', {'form': form})
+class UpdateGroupView(UpdateView):
+    model = Group
+    form_class = UpdateGroupForm
+    success_url = reverse_lazy('groups:list')
+    template_name = 'groups/update.html'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        try:
+            initial['headman_field'] = self.object.headman.pk
+        except AttributeError:
+            pass
+        return initial
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        students = form.cleaned_data['students']
+        for student in students:
+            student.group = self.object
+            if hasattr(student, 'headman_group'):
+                group = student.headman_group
+                group.headman = None
+                group.save()
+            student.save()
+
+        headman_pk = int(form.cleaned_data.get('headman_field'))
+        if headman_pk:
+            form.instance.headman = Student.objects.get(pk=headman_pk)
+        else:
+            form.instance.headman = None
+        form.save()
+
+        return response
 
 
-def update_group(request, pk):
-    group = get_object_or_404(Group, pk=pk)
-
-    if request.method == 'GET':
-        form = UpdateGroupForm(instance=group)
-    elif request.method == 'POST':
-        form = UpdateGroupForm(request.POST, instance=group)
-        if form.is_valid():
-            form.save()
-        return HttpResponseRedirect(reverse('groups:list'))
-    return render(request, 'groups/update.html', {'form': form})
+class DetailGroupView(DetailView):
+    model = Group
+    template_name = 'groups/detail.html'
 
 
-def delete_group(request, pk):
-    group = get_object_or_404(Group, pk=pk)
-    if request.method == 'POST':
-        group.delete()
-        return HttpResponseRedirect(reverse('groups:list'))
-    return render(request, 'groups/delete.html', {'group': group})
+class DeleteGroupView(DeleteView):
+    model = Group
+    template_name = 'groups/delete.html'
+    success_url = reverse_lazy('groups:list')
