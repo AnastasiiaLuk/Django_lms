@@ -54,7 +54,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'courses:list' %}">List</a></li>
                         {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="{% url 'courses:create' %}">Create</a></li>
+                          <li><a class="dropdown-item" href="{% url 'courses:create' %}">Create</a></li>
                         {% endif %}
                     </ul>
 
