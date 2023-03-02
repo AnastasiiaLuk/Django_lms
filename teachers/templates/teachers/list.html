@@ -34,25 +34,35 @@
         <table class="table table-striped table-hover">
             <thead>
             <tr class="text-center">
-                 <th></th>
-                 <th>First name</th>
-                 <th>Last name</th>
-                 <th>Birthday</th>
-                 <th>Salary</th>
-                 <th><i class="bi bi-pencil-square"></i></th>
-                 <th><i class="bi bi-trash3"></i></th>
+                <th></th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Birthday</th>
+                <th>Salary</th>
+                {% if user.is_authenticated %}
+                    <th><i class="bi bi-pencil-square"></i></th>
+                    <th><i class="bi bi-trash3"></i></th>
+                {% endif %}
             </tr>
             <thead>
             <tbody>
             {% for teacher in object_list.qs %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td><a href="{% url 'teachers:detail' teacher.pk %}">{{ teacher.first_name }}</a></td>
+                    {% if user.is_authenticated %}
+                        <td><a href="{% url 'teachers:detail' teacher.pk %}">{{ teacher.first_name }}</a></td>
+                    {% else %}
+                        <td>{{ teacher.first_name }}</td>
+                    {% endif %}
                     <td>{{ teacher.last_name }}</td>
                     <td class="text-center">{{ teacher.birthday|date:'d M Y(l)'}}</td>
                     <td class="text-center">{{ teacher.salary }}</td>
-                    <td class="text-center"><a class="btn btn-outline-primary btn-sm" href="{% url 'teachers:update' teacher.pk %}">Edit</a></td>
-                    <td class="text-center"><a class="btn btn-outline-danger btn-sm" href="{% url 'teachers:delete' teacher.pk %}">Remove</a></td>
+                    {% if user.is_authenticated %}
+                        <td class="text-center"><a class="btn btn-outline-primary btn-sm"
+                                                   href="{% url 'teachers:update' teacher.pk %}">Edit</a></td>
+                        <td class="text-center"><a class="btn btn-outline-danger btn-sm"
+                                                   href="{% url 'teachers:delete' teacher.pk %}">Remove</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

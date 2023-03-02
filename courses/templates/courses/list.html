@@ -37,20 +37,28 @@
                 <th></th>
                 <th>Course Name</th>
                 <th>Price</th>
-                <th><i class="bi bi-pencil-square"></i></th>
-                <th><i class="bi bi-trash3"></i></th>
+                {% if user.is_authenticated %}
+                    <th><i class="bi bi-pencil-square"></i></th>
+                    <th><i class="bi bi-trash3"></i></th>
+                {% endif %}
             </tr>
             <thead>
             <tbody>
             {% for course in object_list.qs %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td><a href="{% url 'courses:detail' course.pk %}">{{ course.course_name }}</a></td>
+                    {% if user.is_authenticated %}
+                        <td><a href="{% url 'courses:detail' course.pk %}">{{ course.course_name }}</a></td>
+                     {% else %}
+                        <td>{{ course.course_name }}</td>
+                    {% endif %}
                     <td class="text-center">{{ course.program }}</td>
-                    <td class="text-center"><a class="btn btn-outline-primary btn-sm"
+                    {% if user.is_authenticated %}
+                        <td class="text-center"><a class="btn btn-outline-primary btn-sm"
                                                href="{% url 'courses:update' course.pk %}">Edit</a></td>
-                    <td class="text-center"><a class="btn btn-outline-danger btn-sm"
+                        <td class="text-center"><a class="btn btn-outline-danger btn-sm"
                                                href="{% url 'courses:delete' course.pk %}">Remove</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

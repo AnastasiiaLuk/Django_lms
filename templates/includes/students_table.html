@@ -8,8 +8,10 @@
         <th>Headman</th>
         {% if not is_group %}
             <th>Group</th>
-            <th><i class="bi bi-pencil-square"></i></th>
-            <th><i class="bi bi-trash3"></i></th>
+             {% if user.is_authenticated %}
+                <th><i class="bi bi-pencil-square"></i></th>
+                <th><i class="bi bi-trash3"></i></th>
+             {% endif %}
         {% endif %}
     </tr>
     <thead>
@@ -17,7 +19,11 @@
     {% for st in object_list %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'students:detail' st.pk %}">{{ st.first_name }}</a></td>
+            {% if user.is_authenticated %}
+                <td><a href="{% url 'students:detail' st.pk %}">{{ st.first_name }}</a></td>
+            {% else %}
+                <td>{{ st.first_name }}</td>
+            {% endif %}
             <td>{{ st.last_name }}</td>
             <td class="text-center">{{ st.birthday|date:'d M Y (l)' }}</td>
             <td class="text-center">
@@ -26,10 +32,12 @@
                 {% endif %}
             {% if not is_group %}
                 <td class="text-center">{{ st.group.group_name }}</td>
-                <td class="text-center"><a class="btn btn-outline-primary btn-sm"
-                                           href="{% url 'students:update' st.pk %}">Edit</a></td>
-                <td class="text-center"><a class="btn btn-outline-danger btn-sm"
-                                           href="{% url 'students:delete' st.pk %}">Remove</a></td>
+                {% if user.is_authenticated %}
+                    <td class="text-center"><a class="btn btn-outline-primary btn-sm"
+                                               href="{% url 'students:update' st.pk %}">Edit</a></td>
+                    <td class="text-center"><a class="btn btn-outline-danger btn-sm"
+                                               href="{% url 'students:delete' st.pk %}">Remove</a></td>
+                {% endif %}
             {% endif %}
         </tr>
     {% endfor %}

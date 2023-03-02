@@ -45,12 +45,12 @@ INSTALLED_APPS = [
     'django_filters',
     'debug_toolbar',
 
-    'core',
-    'students',
-    'groups',
-    'teachers',
-    'courses',
-    'accounts',
+    'core.apps.CoreConfig',
+    'students.apps.StudentsConfig',
+    'groups.apps.GroupsConfig',
+    'teachers.apps.TeachersConfig',
+    'courses.apps.CoursesConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +154,6 @@ INTERNAL_IPS = [
 
 LOGIN_REDIRECT_URL = reverse_lazy('students:list')
 LOGOUT_REDIRECT_URL = reverse_lazy('home')
+
+EMAIL_PORT = 1030
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
