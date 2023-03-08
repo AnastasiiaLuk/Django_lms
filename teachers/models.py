@@ -10,11 +10,12 @@ from core.models import PersonModel
 class Teacher(PersonModel):
     salary = models.PositiveIntegerField(default=10_000)
 
+    class Meta:
+        db_table = 'teachers'
+
     def __str__(self):
         return f'{self.first_name} {self.last_name} (${self.salary})'
 
-    class Meta:
-        db_table = 'teachers'
 
     @classmethod
     def _generate(cls):
