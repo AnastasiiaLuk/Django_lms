@@ -19,6 +19,13 @@ class Group(BaseModel):
     class Meta:
         db_table = 'groups'
 
+    def __str__(self):
+        return f'{self.group_name}'
+
+    def get_name(self):
+        return self.teachers.all()
+
+
     @classmethod
     def generate_fake_data(cls, cnt):
         groups_name = ['Python', 'Front-end', 'Java', 'C#', 'C/C++', 'DevOPS', 'PM', 'QA']
