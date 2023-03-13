@@ -20,7 +20,7 @@
                         <div class="col-3"></div>
                         <div class="col">
                             <form method="get">
-                                {{ object_list.form|crispy }}
+                                {{ form|crispy }}
                                 <input class="btn btn-outline-success mt-3" type="submit" value="Search"><br>
                             </form>
                         </div>
@@ -31,7 +31,7 @@
         </div>
    </div>
    <div class="row">
-        <{% with object_list=object_list.qs is_group=False %}
+        <{% with object_list=object_list is_group=False %}
             {% include 'includes/students_table.html' %}
         {% endwith %}
     </div>
